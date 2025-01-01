@@ -17,6 +17,8 @@ import {
 } from './mongodb/admin-session.schema';
 import { User, UserSchema } from './mongodb/user.schema';
 import { AdminUser, AdminUserSchema } from './mongodb/admin-user.schema';
+import { AdminFacingAuthController } from './controllers/admin-facing/auth/auth.controller';
+import { ProductController } from './controllers/admin-facing/product/product.controller';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -39,6 +41,9 @@ import { AdminUser, AdminUserSchema } from './mongodb/admin-user.schema';
     AppController,
     UserFacingAuthController,
     UserFacingProductController,
+    AdminFacingAuthController,
+    UserFacingAuthController,
+    ProductController,
   ],
   providers: [AppService, ProductService, AuthService],
 })

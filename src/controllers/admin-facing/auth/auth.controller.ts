@@ -1,16 +1,16 @@
 import { Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { SignIntoClientRequestBody } from 'src/models/auth';
+import { SignIntoClientRequestBody, UserInfo } from 'src/models/auth';
 import { AuthService } from 'src/services/auth/auth.service';
 import { UAParser } from 'ua-parser-js';
 
-@Controller('auth/client')
-export class UserFacingAuthController {
+@Controller('auth/admin')
+export class AdminFacingAuthController {
   constructor(private authService: AuthService) {}
 
   @Post('')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt-admin'))
   async signIntoClient(@Req() req: Request) {
     // Get the User-Agent from the headers
     const userAgent = req.headers['user-agent'];
