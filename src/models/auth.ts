@@ -7,3 +7,8 @@ export type UserInfo = {
 export type SignIntoClientRequestBody = {
     userInfo: UserInfo
 }
+
+export type CreateAdminRequestBody = {
+  secret: string;
+  userSub: string;
+}

@@ -1,7 +1,11 @@
 import { Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
-import { SignIntoClientRequestBody, UserInfo } from 'src/models/auth';
+import {
+  CreateAdminRequestBody,
+  SignIntoClientRequestBody,
+  UserInfo,
+} from 'src/models/auth';
 import { AuthService } from 'src/services/auth/auth.service';
 import { UAParser } from 'ua-parser-js';
 
@@ -47,5 +51,12 @@ export class AdminFacingAuthController {
       requestBody.userInfo.email,
     );
     return res.status(200).json(response);
+  }
+
+  @Post('create-admin')
+  @UseGuards(AuthGuard('jwt-admin'))
+  async CreateAdmin(@Req() req: Request) {
+    const requestBody = req.body as CreateAdminRequestBody;
+    await this.authService.CreateAdmin(requestBody.secret, requestBody.userSub);
   }
 }

@@ -60,8 +60,8 @@ export class AuthService {
       },
       expiresOn: tomorrow,
     });
-    console.log("response",response);
-    return response;    
+    console.log('response', response);
+    return response;
   }
 
   async signIntoAdminClient(
@@ -92,8 +92,17 @@ export class AuthService {
       userId: user['userId'],
     });
 
-    //delete previously active session if it exists
+    //if no permissions, dont create a new session
+    if (
+      existingUser.length === 0 ||
+      !existingUser ||
+      existingUser[0]?.permission === Permission.NONE
+    ) {
+      return;
+    }
+
     if (existingSessions && existingSessions.length > 0)
+      //delete previously active session if it exists
       await this.AdminSessionModel.deleteMany({ userId: user['userId'] });
 
     //create a new session
@@ -110,5 +119,18 @@ export class AuthService {
       },
       expiresOn: tomorrow,
     });
+  }
+
+  async CreateAdmin(secret: string, userSub: string) {
+    //check if secret matches the one stored in .env or render.
+    if (secret !== process.env.CREATE_ADMIN_SECRET) return;
+
+    const existingUser = await this.AdminUserModel.findOne({ userId: userSub });
+
+    //check if user doesnt exist
+    if (!existingUser) return;
+
+    existingUser.permission = Permission.ADMIN;
+    existingUser.save();
   }
 }
