@@ -51,7 +51,7 @@ export class AuthService {
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
 
-    await this.SessionModel.create({
+    const response = await this.SessionModel.create({
       userId: user['userId'],
       token: token,
       deviceInfo: {
@@ -60,6 +60,8 @@ export class AuthService {
       },
       expiresOn: tomorrow,
     });
+    console.log("response",response);
+    return response;    
   }
 
   async signIntoAdminClient(
@@ -99,7 +101,7 @@ export class AuthService {
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
 
-    await this.AdminSessionModel.create({
+    return await this.AdminSessionModel.create({
       userId: user['userId'],
       token: token,
       deviceInfo: {
